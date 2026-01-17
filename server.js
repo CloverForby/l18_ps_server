@@ -1,8 +1,8 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const app = express();
-
+const port = 3000;
 const connection = mysql.createConnection({
     host:'1otfwx.h.filess.io', //Guys PLs change this to your MySQL host
     user:'problemstatement_l18_steelgate', //Guys PLs change this to your MySQL username
@@ -11,16 +11,22 @@ const connection = mysql.createConnection({
     database:'problemstatement_l18_steelgate'
 })
 
+app.use(express.json())
+
+
+
 app.get('/diplomas', (req, res)=>{
   const sql = "SELECT * FROM Diploma"
   connection.query(sql, (err,data)=> {
     if (err){
-      console.error("Error getting Diplomas")
-    } else {
-      return data
+      console.error(err);
+      return res.status(500).json({ error: "Error getting Diplomas" });
     }
+    res.json(data);
   })
 })
-app.listen(3307, () => {
-  console.log('Server running on port 3307');
+
+app.listen(port, () => {
+  console.log('Server running on port', port);
 });
+
