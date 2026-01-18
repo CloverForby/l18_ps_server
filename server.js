@@ -87,7 +87,7 @@ app.post('/register', (req, res) => {
                 return res.status(500).send('Error adding register');
             }
 
-            res.json(data);
+            res.json(results);
         });
     });
 
