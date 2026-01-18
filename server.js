@@ -12,10 +12,7 @@ const connection = mysql.createConnection({
 })
 
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-  ],
-  credentials: true 
+  origin: "http://localhost:3000"
 }));
 connection.connect(err => {
   if (err) {
