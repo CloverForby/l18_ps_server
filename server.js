@@ -45,7 +45,6 @@ app.get('/diplomas', (req, res)=>{
     }
     res.json(data);
   })
-  connection.release();
 })
 
 
