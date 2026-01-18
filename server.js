@@ -11,9 +11,18 @@ const connection = mysql.createConnection({
     database:'problemstatement_l18_steelgate'
 })
 
-app.use(cors({
+/*app.use(cors({
   origin: "http://localhost:3000"
-}));
+}));*/
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // allow any origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS'); // allowed methods
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // allowed headers
+  next();
+});
+
+app.use(cors());
 connection.connect(err => {
   if (err) {
     console.error('DB error:', err);
