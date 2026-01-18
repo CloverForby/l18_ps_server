@@ -3,12 +3,13 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     host:'1otfwx.h.filess.io', //Guys PLs change this to your MySQL host
     user:'problemstatement_l18_steelgate', //Guys PLs change this to your MySQL username
     password: '2e1761ea94314cadd2425595b65925896e18ba9f', //Guys PLs change this to your MySQL password
     port: 3307,
-    database:'problemstatement_l18_steelgate'
+    database:'problemstatement_l18_steelgate',
+    connectionLimit: 3
 })
 
 app.use(cors({
@@ -16,13 +17,6 @@ app.use(cors({
     "http://localhost:3000",
   ]
 }));
-connection.connect(err => {
-  if (err) {
-    console.error('DB error:', err);
-  } else {
-    console.log('MySQL connected');
-  }
-});
 
 
 app.use(express.json())
