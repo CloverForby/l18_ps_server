@@ -2,21 +2,28 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
-const port =  3000;
-const connection = mysql.createPool({
+const port = 3000;
+const connection = mysql.createConnection({
     host:'1otfwx.h.filess.io', //Guys PLs change this to your MySQL host
     user:'problemstatement_l18_steelgate', //Guys PLs change this to your MySQL username
     password: '2e1761ea94314cadd2425595b65925896e18ba9f', //Guys PLs change this to your MySQL password
     port: 3307,
-    database:'problemstatement_l18_steelgate',
-    connectionLimit: 3
+    database:'problemstatement_l18_steelgate'
 })
 
 app.use(cors({
   origin: [
     "http://localhost:3000",
-  ]
+  ],
+  credentials: true 
 }));
+connection.connect(err => {
+  if (err) {
+    console.error('DB error:', err);
+  } else {
+    console.log('MySQL connected');
+  }
+});
 
 
 app.use(express.json())
@@ -66,13 +73,14 @@ app.get('/module/:id', (req, res)=>{
 app.post('/register', (req, res) => {
         const { name, email, code } = req.body;
         const sql = 'INSERT INTO register (name,email,code) VALUES (?, ?, ?)';
+        console.log(req.session);
         connection.query(sql, [name, email, code], (error, results) => {
             if (error) {
-                console.error('Error adding register:', error);
+                console.error('Error adding note:', error);
                 return res.status(500).send('Error adding register');
             }
 
-            res.json({ success: true });
+            res.json(data);
         });
     });
 
@@ -80,4 +88,6 @@ app.post('/register', (req, res) => {
 app.listen(port, () => {
   console.log('Server running on port', port);
 });
+
+
 
