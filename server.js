@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
+const port =  3000;
 const connection = mysql.createPool({
     host:'1otfwx.h.filess.io', //Guys PLs change this to your MySQL host
     user:'problemstatement_l18_steelgate', //Guys PLs change this to your MySQL username
