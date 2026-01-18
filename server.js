@@ -11,7 +11,12 @@ const connection = mysql.createConnection({
     database:'problemstatement_l18_steelgate'
 })
 
-
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+  ],
+  credentials: true 
+}));
 connection.connect(err => {
   if (err) {
     console.error('DB error:', err);
@@ -35,6 +40,50 @@ app.get('/diplomas', (req, res)=>{
     res.json(data);
   })
 })
+
+
+app.get('/diploma/:id', (req, res)=>{
+  const sql = `SELECT Diploma_Module.module, Modules.title FROM Diploma_Module
+                INNER JOIN Modules ON Diploma_Module.module = Modules.code
+                WHERE Diploma_Module.diploma = ?`
+
+  const diplomaid = req.params.id;
+  connection.query(sql, [diplomaid], (err,data)=> {
+    if (err){
+      console.error(err);
+      return res.status(500).json({ error: "Error getting modules" });
+    }
+    res.json(data);
+  })
+})
+
+
+app.get('/module/:id', (req, res)=>{
+  const sql = "SELECT * FROM Modules where code = ?"
+  const moduleid = req.params.id;
+  connection.query(sql, [moduleid], (err,data)=> {
+    if (err){
+      console.error(err);
+      return res.status(500).json({ error: "Error getting Diplomas" });
+    }
+    res.json(data);
+  })
+})
+
+router.post('/register', (req, res) => {
+        const { name, email, code } = req.body;
+        const sql = 'INSERT INTO register (name,email,code) VALUES (?, ?, ?)';
+        console.log(req.session);
+        connection.query(sql, [name, email, code], (error, results) => {
+            if (error) {
+                console.error('Error adding note:', error);
+                return res.status(500).send('Error adding register');
+            }
+
+            res.json(data);
+        });
+    });
+
 
 app.listen(port, () => {
   console.log('Server running on port', port);
