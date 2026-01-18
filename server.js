@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
-
+const cors = require('cors');
 const app = express();
 const port = 3000;
 const connection = mysql.createConnection({
@@ -70,13 +70,12 @@ app.get('/module/:id', (req, res)=>{
   })
 })
 
-router.post('/register', (req, res) => {
+app.post('/register', (req, res) => {
         const { name, email, code } = req.body;
         const sql = 'INSERT INTO register (name,email,code) VALUES (?, ?, ?)';
-        console.log(req.session);
         connection.query(sql, [name, email, code], (error, results) => {
             if (error) {
-                console.error('Error adding note:', error);
+                console.error('Error adding register:', error);
                 return res.status(500).send('Error adding register');
             }
 
